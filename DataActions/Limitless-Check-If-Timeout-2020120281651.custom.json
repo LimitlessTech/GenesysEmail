@@ -1,0 +1,52 @@
+{
+  "name": "Limitless Check If Timeout - Exported 2020-12-02 @ 8:16",
+  "integrationType": "custom-rest-actions",
+  "actionType": "custom",
+  "config": {
+    "request": {
+      "requestUrlTemplate": "https://prod.api.belimitless-app.io/crm/integration/messages/${input.msgId}",
+      "requestType": "GET",
+      "headers": {
+        "x-api-key": "<<<Your KEY HERE>>>"
+      },
+      "requestTemplate": "${input.rawRequest}"
+    },
+    "response": {
+      "translationMap": {
+        "tS": "$.messages[0].timeoutState"
+      },
+      "translationMapDefaults": {
+        "tS": "false"
+      },
+      "successTemplate": "{\"timeout\":${tS}}"
+    }
+  },
+  "contract": {
+    "input": {
+      "inputSchema": {
+        "title": "Message",
+        "type": "object",
+        "properties": {
+          "msgId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "output": {
+      "successSchema": {
+        "title": "Response",
+        "type": "object",
+        "properties": {
+          "timeout": {
+            "default": "false",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "secure": false
+}

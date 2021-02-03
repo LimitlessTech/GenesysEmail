@@ -1,0 +1,107 @@
+{
+  "name": "Limitless Pull Full Answer - Exported 2020-12-02 @ 15:01",
+  "integrationType": "custom-rest-actions",
+  "actionType": "custom",
+  "config": {
+    "request": {
+      "requestUrlTemplate": "https://prod.api.belimitless-app.io/crm/integration/messages/${input.msgId}",
+      "requestType": "GET",
+      "headers": {
+        "x-api-key": "<<<Your KEY HERE>>>"
+      },
+      "requestTemplate": "${input.rawRequest}"
+    },
+    "response": {
+      "translationMap": {
+        "question": "$.messages[0].dialogues[0].body",
+        "E1": "$.messages[0].dialogues[1].body",
+        "eR": "$.messages[0].escalateReasonDesc",
+        "E2": "$.messages[0].dialogues[3].body",
+        "eS": "$.messages[0].escalateState",
+        "C1": "$.messages[0].dialogues[0].body",
+        "E3": "$.messages[0].dialogues[5].body",
+        "C2": "$.messages[0].dialogues[2].body",
+        "C3": "$.messages[0].dialogues[4].body",
+        "rC": "$.messages[0].responseCode",
+        "answer": "$.messages[0].dialogues[-1].body",
+        "ready": "$.messages[0].dialogues.length()"
+      },
+      "translationMapDefaults": {
+        "question": "\"\"",
+        "E1": "\"\"",
+        "eR": "\"\"",
+        "E2": "\"\"",
+        "C1": "\"\"",
+        "E3": "\"\"",
+        "eS": "false",
+        "C2": "\"\"",
+        "C3": "\"\"",
+        "rC": "\"\"",
+        "answer": "\"\"",
+        "ready": "1"
+      },
+      "successTemplate": "{\"escalate\":${eS},\"escalateReason\":${eR},\"responseCode\":${rC},\"question\":${question},\"answer\":${answer},\"ready\":${ready},\"C1\":${C1},\"E1\":${E1},\"C2\":${C2},\"E2\":${E2},\"C3\":${C3},\"E3\":${E3}}"
+    }
+  },
+  "contract": {
+    "input": {
+      "inputSchema": {
+        "title": "Message",
+        "type": "object",
+        "properties": {
+          "msgId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "output": {
+      "successSchema": {
+        "title": "Response",
+        "type": "object",
+        "properties": {
+          "escalate": {
+            "default": "false",
+            "type": "boolean"
+          },
+          "escalateReason": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "responseCode": {
+            "type": "string"
+          },
+          "ready": {
+            "type": "integer"
+          },
+          "C1": {
+            "type": "string"
+          },
+          "E1": {
+            "type": "string"
+          },
+          "C2": {
+            "type": "string"
+          },
+          "E2": {
+            "type": "string"
+          },
+          "C3": {
+            "type": "string"
+          },
+          "E3": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "secure": false
+}

@@ -1,0 +1,58 @@
+{
+  "name": "Limitless Submit Follow Up Question - Exported 2020-12-02 @ 8:17",
+  "integrationType": "custom-rest-actions",
+  "actionType": "custom",
+  "config": {
+    "request": {
+      "requestUrlTemplate": "https://prod.api.belimitless-app.io/crm/public/messages/${input.msgId}/reply?access_key=${input.accessKey}",
+      "requestType": "POST",
+      "headers": {
+        "x-api-key": "<<<Your KEY HERE>>>",
+        "Content-Type": "application/json"
+      },
+      "requestTemplate": "{\"body\": \"$esc.jsonString(${input.body})\"}"
+    },
+    "response": {
+      "translationMap": {},
+      "translationMapDefaults": {},
+      "successTemplate": "${rawResult}"
+    }
+  },
+  "contract": {
+    "input": {
+      "inputSchema": {
+        "title": "Message",
+        "type": "object",
+        "required": [
+          "msgId",
+          "body"
+        ],
+        "properties": {
+          "msgId": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "accessKey": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "output": {
+      "successSchema": {
+        "title": "Response",
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "secure": false
+}
