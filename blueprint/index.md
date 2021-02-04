@@ -13,7 +13,7 @@ The video highlighted six main elements:
 1. The enterprise and its &quot;Engage an Expert&quot; webform
 2. A customer who wants to ask a question
 3. The Genesys Cloud email endpoint and associated email flow
-4. A Limitless Expert using the SmartCrowd application
+4. A Limitless Expert using the SmartCrowd application
 5. A Genesys Cloud agent who was brought into the conversation
 6. And reporting through Genesys Cloud flow outcomes
 
@@ -27,7 +27,7 @@ Well, this is certainly the first step. Without Limitless there would be no Expe
 2. The Group Name for your demo – also from Limitless
 3. A login and password for an Expert in that group
 
-We are going to use the API key in the definition of the Data Action that will be sending the customer question through the Limitless API. The Group Name will be passed in through the Data Action. And you will log into the Limitless SmartCrowd web site to access the customer question using your login and password for the expert.
+We are going to use the API key in the definition of the Data Action that will be sending the customer question through the Limitless API. The Group Name will be passed in through the Data Action. And you will log into the Limitless SmartCrowd web site to access the customer question using your login and password for the expert.
 
 # The Data Actions
 
@@ -39,13 +39,17 @@ After you have imported all five Data Actions your Data Action list should look 
 
 ![](images/DataActions.png)
 
-![](images/APIkey.png) Let&#39;s look at the &quot;Limitless Push Question&quot; Data Action. The Contracts define what we need to send to Limitless. We&#39;ll see how these are populated in the Architect Flow. In the Configuration Setup you see the &quot;Request URL Template&quot; which is pointing to the Limitless Servers.
+![](images/APIkey.png) 
+
+Let&#39;s look at the &quot;Limitless Push Question&quot; Data Action. The Contracts define what we need to send to Limitless. We&#39;ll see how these are populated in the Architect Flow. In the Configuration Setup you see the &quot;Request URL Template&quot; which is pointing to the Limitless Servers.
 
 And below that you see the headers section and the x-api-key field. That value to the right of it need to be populated with your API-KEY from your Limitless account.
 
 Once you have that populated you can go to the Test section and test and give it a try. Put the Group Name you received from Limitless in the &quot;groupName&quot; field. Then make sure you have a valid email address in the &quot;customerEmail&quot; field and place a question in the &quot;body&quot; field. You can put anything you like in the other fields. Hit the &quot;Run Action&quot; button and see if your question appears in the Limitless web page.
 
-![](images/LimitlessGui.png) The Data Action itself should come back with success and a lot of values for msgid, customerEmailHash, etc. If you didn&#39;t see &quot;Action successfully run&quot; then we need to sort out the x-api-key.
+![](images/LimitlessGui.png) 
+
+The Data Action itself should come back with success and a lot of values for msgid, customerEmailHash, etc. If you didn&#39;t see &quot;Action successfully run&quot; then we need to sort out the x-api-key.
 
 And then you should see your question in the Limitless website. You can respond to your question right there, but your response won&#39;t really go anywhere. It will just sit on the Limitless server until we build our Architect Email flow to retrieve it.
 
@@ -75,7 +79,9 @@ And that brings us to our first validation error – the queues. You will need t
 
 After you have configured all the &quot;Transfer to ACD&quot; blocks in both the &quot;Initial State&quot; flow and the &quot;Wait for Response&quot; flow you will see a lot less validation errors.
 
-![](images/FlowOutcomes.png) Just before we send the customer&#39;s question about cancelation to an agent, we use the &quot;Set Flow Outcome&quot; block to tag this interaction as a &quot;Limitless Immediate Route to Agent&quot;. This will help us in reporting later when we review Flow Outcomes from the Genesys Cloud Performance menu. So, at this point we might as well go ahead and define all our Flow Outcomes. You can access that section from the Genesys Cloud Admin screen under Architect.
+![](images/FlowOutcomes.png) 
+
+Just before we send the customer&#39;s question about cancelation to an agent, we use the &quot;Set Flow Outcome&quot; block to tag this interaction as a &quot;Limitless Immediate Route to Agent&quot;. This will help us in reporting later when we review Flow Outcomes from the Genesys Cloud Performance menu. So, at this point we might as well go ahead and define all our Flow Outcomes. You can access that section from the Genesys Cloud Admin screen under Architect.
 
 Here is a screen shot of the Flow Outcomes used in this blueprint. Please define each of these outcomes and then go through the two flows &quot;Initial State&quot; and &quot;Wait for Response&quot; to use these outcomes in the &quot;Set Flow Outcome&quot; blocks. Once that has been done there will be even fewer validation errors in the Email flow.
 
@@ -85,9 +91,13 @@ Case 2: Reset – this branch is looking for the keyword &quot;reset&quot; in th
 
 We want to give the customer a nicely formatted response, so we use the &quot;Get Response&quot; block. Responses are like text macros and you define them in the Genesys Admin page under the &quot;Contact Center&quot; section using the &quot;Canned Responses&quot; option.
 
-![](images/Responses.png) We have three responses defined in this blueprint and you will need to create the &quot;PasswordReset&quot; response to support this case of the switch statement.
+![](images/Responses.png) 
 
-![](images/PasswordReset.png) The canned response should look something like what is defined on the screen beside here. You can have whatever you like in your canned response. To learn more about Canned Responses please follow this link: [https://help.mypurecloud.com/articles/about-canned-responses/](https://help.mypurecloud.com/articles/about-canned-responses/)
+We have three responses defined in this blueprint and you will need to create the &quot;PasswordReset&quot; response to support this case of the switch statement.
+
+![](images/PasswordReset.png) 
+
+The canned response should look something like what is defined on the screen beside here. You can have whatever you like in your canned response. To learn more about Canned Responses please follow this link: [https://help.mypurecloud.com/articles/about-canned-responses/](https://help.mypurecloud.com/articles/about-canned-responses/)
 
 Once you have saved your Canned Response for PasswordReset you want to make sure it is selected in the &quot;Get Response&quot; block. And once you have done that you will have removed one more validation error.
 
@@ -131,7 +141,9 @@ There is an extra condition in the &quot;Decision&quot; block regarding the Esca
 
 Let&#39;s go ahead and create the Script for our screen pop. You do this in the Genesys Cloud Admin page under the &quot;Contact Center&quot; section using the &quot;Scripts&quot; choice. There you can import the script &quot;Limitless Script&quot; from the blueprint package. You can review importing scripts at this link: [https://help.mypurecloud.com/articles/import-scripts/](https://help.mypurecloud.com/articles/import-scripts/)
 
-![](Script.png) This script is somewhat involved by showing the agent the question from the customer, the answer from the Expert and any escalation reason from the Expert.
+![](Script.png) 
+
+This script is somewhat involved by showing the agent the question from the customer, the answer from the Expert and any escalation reason from the Expert.
 
 There is also a button to show the entire dialog that happened between the customer and the expert.
 
@@ -231,6 +243,8 @@ This is just a standard Canned Response that the agent can invoke to try and hel
 
 But that gets to the core of belnding agents with Experts. Sometimes the agent can support the expert when the expert can&#39;t resolve an issue. And sometimes an Expert can help an agent by sharing information about the customer&#39;s progress in the contact center journey.
 
-![](images/Reprots.png) So it&#39;s only fitting that we end this blueprint with a Genesys Cloud report about Flow Outcomes about all the customer jouneys.
+![](images/Reprots.png) 
+
+So it&#39;s only fitting that we end this blueprint with a Genesys Cloud report about Flow Outcomes about all the customer jouneys.
 
 And there, you see, is the power of Gig-CX. Bringing empathy and expertise into the customer journey under the direction and guidance of the contact center. Enjoy!
